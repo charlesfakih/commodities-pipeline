@@ -16,9 +16,9 @@ def store_price(commodity: str, price: float):
     client.ltrim(f"prices:{commodity}", 0, MAX_HISTORY - 1)
 
 def get_latest_price(commodity: str) -> dict | None:
-    client = get_redis_client
+    client = get_redis_client()
     record = client.lindex(f"prices:{commodity}", 0)
-    return json.loads(record) if record else None
+    return json.loads(record) if record else None # type: ignore
 
 def get_stats(commodity: str) -> dict | None:
     client = get_redis_client()

@@ -14,14 +14,14 @@ def get_price(commodity: str):
     return result
 
 @app.get("/average/{commodity}")
-def get_average(commodity: str):
+def get_average(commodity: str, window: int = 10):
     commodity = commodity.upper()
     if commodity not in COMMODITIES:
         raise HTTPException(status_code=404, detail=f"{commodity} not found")
-    average = get_moving_average(commodity)
+    average = get_moving_average(commodity, window=window)
     if average is None:
         raise HTTPException(status_code=404, detail="No data yet")
-    return {"commodity": commodity, "moving_average": average}
+    return {"commodity": commodity, "moving_average": average, "window": window}
 
 @app.get("/stats/{commodity}")
 def get_stats_route(commodity: str):
